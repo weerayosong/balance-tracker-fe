@@ -1,12 +1,25 @@
-# Balance Tracker | Full Stack MERN To-do-List App
+# Balance Tracker | Full Stack MERN To-Do List App
 
-**Sync your professional works and personal well-being.**
-
-Balance Tracker (Work & Life Balance Management App)
+**Sync your professional works and personal well-being.(Work & Life Balance Management App)**
 
 ## System Design & Architecture
 
 https://www.figma.com/board/QAeHnuHJaByl92i3KV0u34/Balance-Tracker-App?node-id=0-1&t=IS5GQM6OpCqDrzb6-1
+
+## API Design & Mongoose Schema Table
+
+https://docs.google.com/spreadsheets/d/1bO5TQJRtacuc0NAsVFe7rWIM6PT-9N5-W83dwIb0EH4/edit?usp=sharing
+
+## Request-Response Pipeline
+
+การสื่อสารระหว่าง 3 ส่วนหลัก (Client -> Server -> Database)
+
+1. **[FE] Action:** ผู้ใช้กดปุ่ม หรือ โหลดหน้าเพจ -> React Context สั่ง `fetch()` ยิง HTTP Request (เช่น `POST /api/v1/tasks`) ไปยัง Backend
+2. **[BE] Middleware:** Express Server รับคำสั่ง -> วิ่งผ่าน `cors()` -> `express.json()` -> Security Filter
+3. **[BE] Controller -> ODM:** Router โยนงานให้ Controller (เช่น `createTask`) -> Controller สั่ง Mongoose ODM (เช่น `Task.create()`)
+4. **[DB] Database:** MongoDB บันทึกข้อมูลและส่งผลลัพธ์กลับมาให้ Mongoose ODM
+5. **[BE] Response:** Controller รับผลลัพธ์จาก Mongoose แล้วจัด Format โยนกลับไปให้ Frontend (`res.status(201).json(data)`) _หากมี Error จะโยนให้ `errorHandler` เป็นคนส่งกลับ_
+6. **[FE] State Update:** React Context รับ JSON Data -> อัปเดต State `tasks` -> หน้าจอ UI อัปเดตอัตโนมัติ
 
 ### Presentation Layer - Frontend
 
