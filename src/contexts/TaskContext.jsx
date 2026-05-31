@@ -35,18 +35,38 @@ export const TaskProvider = ({ children }) => {
     // --- Handlers ---
 
     // add
-    const addTask = () => {
-        setTasks();
+    const addTask = (newTaskData) => {
+        const newTask = {
+            ...newTaskData,
+            id: Date.now(),
+            completed: false,
+            status: "active",
+        };
+        setTasks((prev) => [...prev, newTask]);
     };
 
     // toggle
-    const toggleTask = () => {};
+    const toggleTask = (id) => {
+        setTasks((prev) =>
+            prev.map((task) =>
+                task.id === id ? { ...task, completed: !task.completed } : task,
+            ),
+        );
+    };
 
     // archive
-    const archiveTask = () => {};
+    const archiveTask = (id) => {
+        setTasks((prev) =>
+            prev.map((task) =>
+                task.id === id ? { ...task, status: "archived" } : task,
+            ),
+        );
+    };
 
     // del
-    const deleteTask = () => {};
+    const deleteTask = (id) => {
+        setTasks((prev) => prev.filter((task) => task.id !== id));
+    };
 
     // restore
     const restoreTask = (id) =>

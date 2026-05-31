@@ -88,7 +88,7 @@ export default function TaskBoard() {
                         )}
                         <p className="text-sm font-medium text-slate-500">
                             {currentTab === "Active"
-                                ? "All caught up! หรือไม่ก็ค้นหาไม่เจอ"
+                                ? "All caught up!"
                                 : "Archive is empty."}
                         </p>
                     </div>
