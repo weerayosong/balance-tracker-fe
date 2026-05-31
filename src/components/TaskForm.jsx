@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { FaPlus } from "react-icons/fa6";
+import { FaPlus, FaPlay } from "react-icons/fa6";
 import { TaskContext } from "../contexts/TaskContext";
 
 export default function TaskForm() {
@@ -41,17 +41,28 @@ export default function TaskForm() {
 
     return (
         <div className="flex flex-col bg-white border border-slate-200 rounded-sm shadow-sm h-full relative">
-            {/* +create new task */}
-            <div className="p-3 border-b border-slate-100 flex justify-between items-center bg-slate-50 lg:bg-white rounded-t-sm shrink-0">
-                <span className="font-semibold text-slate-700 flex items-center">
-                    <FaPlus className="text-slate-400 mr-2" />
-                    Create New Task
-                </span>
-            </div>
-
             {/* form */}
-            <div className="overflow-y-auto custom-scrollbar flex-1 p-4">
-                <form onSubmit={handleSubmit} className="space-y-4">
+            <form
+                onSubmit={handleSubmit}
+                className="flex flex-col h-full min-h-0"
+            >
+                {/* +create new task */}
+                <div className="p-3 border-b border-slate-100 flex justify-between items-center bg-slate-50 lg:bg-white rounded-t-sm shrink-0">
+                    <span className="font-semibold text-slate-700 flex items-center">
+                        <FaPlus className="text-slate-400 mr-2" />
+                        Create New Task
+                    </span>
+                    {/* submit btn */}
+                    <button
+                        type="submit"
+                        className="flex items-center gap-1.5 bg-slate-800 text-white px-4 py-1.5 rounded-sm text-xs font-medium hover:bg-slate-700 transition-colors shadow-sm"
+                    >
+                        Save Task
+                        <FaPlay />
+                    </button>
+                </div>
+
+                <div className="overflow-y-auto custom-scrollbar flex-1 p-4">
                     <div className="space-y-3">
                         {/* title */}
                         <div>
@@ -197,9 +208,14 @@ export default function TaskForm() {
                                 />
                             </div>
                             <div>
-                                <label className="block text-xs font-medium text-slate-600 mb-1">
-                                    Energy: {formData.energy}/5
-                                </label>
+                                <div className="flex justify-between items-end mb-1">
+                                    <label className="block text-xs font-medium text-slate-600">
+                                        Energy Level
+                                    </label>
+                                    <span className="text-[10px] text-slate-500 font-medium">
+                                        {formData.energy}/5
+                                    </span>
+                                </div>
                                 <input
                                     type="range"
                                     name="energy"
@@ -208,8 +224,23 @@ export default function TaskForm() {
                                     min="1"
                                     max="5"
                                     step="1"
+                                    list="energy-markers"
                                     className="w-full accent-slate-600 cursor-pointer h-1.5 mb-1 mt-1.5"
                                 />
+                                <datalist id="energy-markers">
+                                    <option value="1"></option>
+                                    <option value="2"></option>
+                                    <option value="3"></option>
+                                    <option value="4"></option>
+                                    <option value="5"></option>
+                                </datalist>
+                                <div className="flex justify-between text-[8px] text-slate-400 px-1 font-medium mt-1 mx-0.5">
+                                    <span>1</span>
+                                    <span>2</span>
+                                    <span>3</span>
+                                    <span>4</span>
+                                    <span>5</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -217,7 +248,7 @@ export default function TaskForm() {
                     <hr className="border-slate-100 my-2" />
 
                     {/* URL & color */}
-                    <div className="space-y-3">
+                    <div className="space-y-3 pb-2">
                         <div>
                             <label className="block text-xs font-medium text-slate-600 mb-1">
                                 Reference URL
@@ -231,31 +262,38 @@ export default function TaskForm() {
                                 className="w-full border border-slate-300 rounded-sm px-3 py-1.5 text-sm focus:outline-none focus:border-slate-500 focus:ring-1 focus:ring-slate-500"
                             />
                         </div>
-                        <div className="w-14">
-                            <label className="block text-xs font-medium text-slate-600 mb-1">
-                                Tag
-                            </label>
-                            <input
-                                type="color"
-                                name="color"
-                                value={formData.color}
-                                onChange={handleChange}
-                                className="h-8 w-full border border-slate-300 rounded-sm cursor-pointer p-0.5 bg-white"
-                            />
+
+                        <div className="flex items-start gap-3">
+                            <div className="w-14 shrink-0">
+                                <label className="block text-xs font-medium text-slate-600 mb-1">
+                                    Tag
+                                </label>
+                                <input
+                                    type="color"
+                                    name="color"
+                                    value={formData.color}
+                                    onChange={handleChange}
+                                    className="h-8 w-full border border-slate-300 rounded-sm cursor-pointer p-0.5 bg-white"
+                                />
+                            </div>
+
+                            <div className="flex-1 min-w-0">
+                                <label className="block text-xs font-medium text-slate-600 mb-1">
+                                    Attachment
+                                </label>
+                                <div
+                                    className="w-full border border-slate-200 border-dashed rounded-sm px-3 py-2 text-sm text-slate-400 bg-slate-50 flex items-center justify-center"
+                                    title="Coming soon"
+                                >
+                                    <span className="text-[11px] font-medium">
+                                        File upload coming soon...
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    {/* submit btn */}
-                    <div className="flex justify-end pt-2 sticky bottom-0 bg-white/90 backdrop-blur-sm pb-1 border-t border-slate-100 mt-2">
-                        <button
-                            type="submit"
-                            className="bg-slate-800 text-white px-6 py-1.5 rounded-sm text-sm font-medium hover:bg-slate-700 transition-colors w-full lg:w-auto shadow-sm"
-                        >
-                            Save Task
-                        </button>
-                    </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     );
 }
