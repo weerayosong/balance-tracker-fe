@@ -1,0 +1,261 @@
+import { useState, useContext } from "react";
+import { FaPlus } from "react-icons/fa6";
+import { TaskContext } from "../contexts/TaskContext";
+
+export default function TaskForm() {
+    const { addTask } = useContext(TaskContext);
+
+    const initialFormState = {
+        title: "",
+        desc: "",
+        category: "Development",
+        sprint: "",
+        date: new Date().toISOString().split("T")[0],
+        time: "09:00",
+        duration: "",
+        energy: 3,
+        url: "",
+        color: "#334155",
+    };
+
+    const [formData, setFormData] = useState(initialFormState);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        addTask(formData);
+
+        setFormData(initialFormState);
+    };
+
+    const titleLength = formData.title.length;
+    const descLength = formData.desc.length;
+
+    return (
+        <div className="flex flex-col bg-white border border-slate-200 rounded-sm shadow-sm h-full relative">
+            {/* +create new task */}
+            <div className="p-3 border-b border-slate-100 flex justify-between items-center bg-slate-50 lg:bg-white rounded-t-sm shrink-0">
+                <span className="font-semibold text-slate-700 flex items-center">
+                    <FaPlus className="text-slate-400 mr-2" />
+                    Create New Task
+                </span>
+            </div>
+
+            {/* form */}
+            <div className="overflow-y-auto custom-scrollbar flex-1 p-4">
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="space-y-3">
+                        {/* title */}
+                        <div>
+                            <div className="flex justify-between items-end mb-1">
+                                <label className="block text-xs font-medium text-slate-600">
+                                    Task Title{" "}
+                                    <span className="text-red-500">*</span>
+                                </label>
+                                <span
+                                    className={`text-[10px] ${titleLength >= 64 ? "text-red-500 font-bold" : "text-slate-400"}`}
+                                >
+                                    {titleLength}/64
+                                </span>
+                            </div>
+                            <input
+                                type="text"
+                                name="title"
+                                value={formData.title}
+                                onChange={handleChange}
+                                required
+                                maxLength={64}
+                                placeholder="e.g., UI Design or Sushi Dinner"
+                                className="w-full border border-slate-300 rounded-sm px-3 py-1.5 text-sm focus:outline-none focus:border-slate-500 focus:ring-1 focus:ring-slate-500"
+                            />
+                        </div>
+
+                        {/* description */}
+                        <div>
+                            <div className="flex justify-between items-end mb-1">
+                                <label className="block text-xs font-medium text-slate-600">
+                                    Description
+                                </label>
+                                <span
+                                    className={`text-[10px] ${descLength >= 256 ? "text-red-500 font-bold" : "text-slate-400"}`}
+                                >
+                                    {descLength}/256
+                                </span>
+                            </div>
+                            <textarea
+                                name="desc"
+                                value={formData.desc}
+                                onChange={handleChange}
+                                rows="2"
+                                maxLength={256}
+                                placeholder="Add notes or acceptance criteria..."
+                                className="w-full border border-slate-300 rounded-sm px-3 py-1.5 text-sm focus:outline-none focus:border-slate-500 focus:ring-1 focus:ring-slate-500 resize-none"
+                            ></textarea>
+                        </div>
+
+                        {/* category&sprint */}
+                        <div className="grid grid-cols-2 gap-3">
+                            <div>
+                                <label className="block text-xs font-medium text-slate-600 mb-1">
+                                    Category{" "}
+                                    <span className="text-red-500">*</span>
+                                </label>
+                                <select
+                                    name="category"
+                                    value={formData.category}
+                                    onChange={handleChange}
+                                    className="w-full border border-slate-300 rounded-sm px-3 py-1.5 text-sm focus:outline-none focus:border-slate-500 focus:ring-1 focus:ring-slate-500 text-slate-700"
+                                >
+                                    <option value="Development">
+                                        Work / Dev
+                                    </option>
+                                    <option value="Health & Routine">
+                                        Life / Routine
+                                    </option>
+                                </select>
+                            </div>
+
+                            {/* hide sprint if routine */}
+                            <div
+                                style={{
+                                    visibility:
+                                        formData.category === "Health & Routine"
+                                            ? "hidden"
+                                            : "visible",
+                                }}
+                            >
+                                <label className="block text-xs font-medium text-slate-600 mb-1">
+                                    Week (Sprint)
+                                </label>
+                                <input
+                                    type="week"
+                                    name="sprint"
+                                    value={formData.sprint}
+                                    onChange={handleChange}
+                                    className="w-full border border-slate-300 rounded-sm px-3 py-1.5 text-sm focus:outline-none focus:border-slate-500 focus:ring-1 focus:ring-slate-500 text-slate-700"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr className="border-slate-100 my-2" />
+
+                    {/* date, time, duration, energy */}
+                    <div className="space-y-3">
+                        <div className="grid grid-cols-2 gap-3">
+                            <div>
+                                <label className="block text-xs font-medium text-slate-600 mb-1">
+                                    Date <span className="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="date"
+                                    name="date"
+                                    value={formData.date}
+                                    onChange={handleChange}
+                                    required
+                                    className="w-full border border-slate-300 rounded-sm px-3 py-1.5 text-sm focus:outline-none focus:border-slate-500 focus:ring-1 focus:ring-slate-500"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-medium text-slate-600 mb-1">
+                                    Time <span className="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="time"
+                                    name="time"
+                                    value={formData.time}
+                                    onChange={handleChange}
+                                    required
+                                    className="w-full border border-slate-300 rounded-sm px-3 py-1.5 text-sm focus:outline-none focus:border-slate-500 focus:ring-1 focus:ring-slate-500"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-5 items-start">
+                            <div>
+                                <label className="block text-xs font-medium text-slate-600 mb-1">
+                                    Est. Hours
+                                </label>
+                                <input
+                                    type="number"
+                                    name="duration"
+                                    value={formData.duration}
+                                    onChange={handleChange}
+                                    min="0.5"
+                                    max="24"
+                                    step="0.5"
+                                    placeholder="e.g. 2"
+                                    className="w-full border border-slate-300 rounded-sm px-3 py-1.5 text-sm focus:outline-none focus:border-slate-500 focus:ring-1 focus:ring-slate-500"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-medium text-slate-600 mb-1">
+                                    Energy: {formData.energy}/5
+                                </label>
+                                <input
+                                    type="range"
+                                    name="energy"
+                                    value={formData.energy}
+                                    onChange={handleChange}
+                                    min="1"
+                                    max="5"
+                                    step="1"
+                                    className="w-full accent-slate-600 cursor-pointer h-1.5 mb-1 mt-1.5"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr className="border-slate-100 my-2" />
+
+                    {/* URL & color */}
+                    <div className="space-y-3">
+                        <div>
+                            <label className="block text-xs font-medium text-slate-600 mb-1">
+                                Reference URL
+                            </label>
+                            <input
+                                type="url"
+                                name="url"
+                                value={formData.url}
+                                onChange={handleChange}
+                                placeholder="https://..."
+                                className="w-full border border-slate-300 rounded-sm px-3 py-1.5 text-sm focus:outline-none focus:border-slate-500 focus:ring-1 focus:ring-slate-500"
+                            />
+                        </div>
+                        <div className="w-14">
+                            <label className="block text-xs font-medium text-slate-600 mb-1">
+                                Tag
+                            </label>
+                            <input
+                                type="color"
+                                name="color"
+                                value={formData.color}
+                                onChange={handleChange}
+                                className="h-8 w-full border border-slate-300 rounded-sm cursor-pointer p-0.5 bg-white"
+                            />
+                        </div>
+                    </div>
+
+                    {/* submit btn */}
+                    <div className="flex justify-end pt-2 sticky bottom-0 bg-white/90 backdrop-blur-sm pb-1 border-t border-slate-100 mt-2">
+                        <button
+                            type="submit"
+                            className="bg-slate-800 text-white px-6 py-1.5 rounded-sm text-sm font-medium hover:bg-slate-700 transition-colors w-full lg:w-auto shadow-sm"
+                        >
+                            Save Task
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+}
