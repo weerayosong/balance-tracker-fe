@@ -1,10 +1,19 @@
+import Header from "../components/Header";
+
 export default function DashboardPage() {
     return (
-        <main className="flex-1 flex flex-col lg:flex-row gap-4 lg:gap-6 min-h-0">
-            <div className="flex-1 flex items-center justify-center bg-white border border-slate-200 rounded-sm shadow-sm">
-                <h1 className="text-xl text-slate-400">Dashboard Page</h1>
-                {/* left col: <TaskForm />, right col: <TaskBoard /> */}
-            </div>
-        </main>
+        <>
+            <Header />
+
+            <main className="flex-1 flex flex-col lg:flex-row gap-4 lg:gap-6 min-h-0">
+                <aside className="hidden lg:flex flex-col bg-white border border-slate-200 rounded-sm shadow-sm shrink-0 lg:w-100 xl:w-105 lg:h-full p-4 items-center justify-center text-slate-400">
+                    Left Column: Task Form Area
+                </aside>
+
+                <section className="flex-1 flex flex-col bg-white border border-slate-200 rounded-sm shadow-sm min-h-0 p-4 items-center justify-center text-slate-400">
+                    Right Column: Task Board Area
+                </section>
+            </main>
+        </>
     );
 }
