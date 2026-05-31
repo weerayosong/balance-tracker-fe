@@ -1,5 +1,6 @@
 import Header from "../components/Header";
 import TaskForm from "../components/TaskForm";
+import TaskBoard from "../components/TaskBoard";
 
 export default function DashboardPage() {
     return (
@@ -11,8 +12,8 @@ export default function DashboardPage() {
                     <TaskForm />
                 </aside>
 
-                <section className="flex-1 flex flex-col bg-white border border-slate-200 rounded-sm shadow-sm min-h-0 p-4 items-center justify-center text-slate-400">
-                    Right Column: Task Board Area
+                <section className="flex-1 min-h-0 h-full w-full">
+                    <TaskBoard />
                 </section>
             </main>
         </>

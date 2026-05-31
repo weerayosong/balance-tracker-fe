@@ -48,9 +48,22 @@ export const TaskProvider = ({ children }) => {
     // del
     const deleteTask = () => {};
 
+    // restore
+    const restoreTask = (id) =>
+        setTasks((prev) =>
+            prev.map((t) => (t.id === id ? { ...t, status: "active" } : t)),
+        );
+
     return (
         <TaskContext.Provider
-            value={{ tasks, addTask, toggleTask, archiveTask, deleteTask }}
+            value={{
+                tasks,
+                addTask,
+                toggleTask,
+                archiveTask,
+                deleteTask,
+                restoreTask,
+            }}
         >
             {children}
         </TaskContext.Provider>

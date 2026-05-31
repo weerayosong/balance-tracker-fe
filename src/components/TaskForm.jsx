@@ -62,7 +62,7 @@ export default function TaskForm() {
                     </button>
                 </div>
 
-                <div className="overflow-y-auto custom-scrollbar flex-1 p-4">
+                <div className="overflow-y-auto custom-scrollbar flex-1 px-4 py-1">
                     <div className="space-y-3">
                         {/* title */}
                         <div>
