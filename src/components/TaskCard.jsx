@@ -16,6 +16,7 @@ export default function TaskCard({
     onArchive,
     onRestore,
     onDelete,
+    onEdit,
 }) {
     const isArchived = task.status === "archived";
     const tagLabel =
@@ -38,7 +39,7 @@ export default function TaskCard({
                     <input
                         type="checkbox"
                         checked={task.completed}
-                        onChange={() => onToggle(task.id)}
+                        onChange={() => onToggle(task._id)}
                         className="w-4 h-4 accent-slate-600 cursor-pointer rounded-sm mt-0.5"
                     />
                 )}
@@ -102,7 +103,7 @@ export default function TaskCard({
             <div className="flex flex-col sm:flex-row gap-2 shrink-0 pt-0.5">
                 {isArchived ? (
                     <button
-                        onClick={() => onRestore(task.id)}
+                        onClick={() => onRestore(task._id)}
                         className="text-slate-500 hover:text-slate-800 px-3 py-1 text-xs border border-slate-200 rounded-sm bg-white shadow-sm hover:border-slate-300 transition-colors whitespace-nowrap flex items-center"
                     >
                         <FaBoxOpen className="mr-1.5" /> Restore
@@ -110,19 +111,20 @@ export default function TaskCard({
                 ) : (
                     <>
                         <button
+                            onClick={onEdit}
                             className="text-slate-400 hover:text-slate-700 bg-slate-50 hover:bg-slate-100 p-1.5 rounded-sm border border-transparent hover:border-slate-200 transition-colors"
                             title="Edit coming soon"
                         >
                             <FaPenToSquare />
                         </button>
                         <button
-                            onClick={() => onArchive(task.id)}
+                            onClick={() => onArchive(task._id)}
                             className="text-slate-400 hover:text-slate-700 bg-slate-50 hover:bg-slate-100 p-1.5 rounded-sm border border-transparent hover:border-slate-200 transition-colors"
                         >
                             <FaBoxArchive />
                         </button>
                         <button
-                            onClick={() => onDelete(task.id)}
+                            onClick={() => onDelete(task._id)}
                             className="text-slate-400 hover:text-red-500 bg-slate-50 hover:bg-red-50 p-1.5 rounded-sm border border-transparent hover:border-red-100 transition-colors"
                         >
                             <FaTrashCan />

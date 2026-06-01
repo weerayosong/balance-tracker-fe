@@ -8,8 +8,14 @@ import { TaskContext } from "../contexts/TaskContext";
 import TaskCard from "./TaskCard";
 
 export default function TaskBoard() {
-    const { tasks, toggleTask, archiveTask, deleteTask, restoreTask } =
-        useContext(TaskContext);
+    const {
+        tasks,
+        toggleTask,
+        archiveTask,
+        deleteTask,
+        restoreTask,
+        setEditingTask,
+    } = useContext(TaskContext);
 
     // local state for filter
     const [currentTab, setCurrentTab] = useState("Active");
@@ -95,12 +101,13 @@ export default function TaskBoard() {
                 ) : (
                     filteredTasks.map((task) => (
                         <TaskCard
-                            key={task.id}
+                            key={task._id}
                             task={task}
                             onToggle={toggleTask}
                             onArchive={archiveTask}
                             onRestore={restoreTask}
                             onDelete={deleteTask}
+                            onEdit={() => setEditingTask(task)}
                         />
                     ))
                 )}

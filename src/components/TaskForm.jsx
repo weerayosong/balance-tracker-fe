@@ -1,9 +1,11 @@
-import { useState, useContext } from "react";
-import { FaPlus, FaPlay } from "react-icons/fa6";
+/* eslint-disable */
+import { useState, useContext, useEffect } from "react";
+import { FaPlus, FaPlay, FaXmark } from "react-icons/fa6";
 import { TaskContext } from "../contexts/TaskContext";
 
 export default function TaskForm() {
-    const { addTask } = useContext(TaskContext);
+    const { addTask, editingTask, editTask, setEditingTask } =
+        useContext(TaskContext);
 
     const initialFormState = {
         title: "",
@@ -20,6 +22,27 @@ export default function TaskForm() {
 
     const [formData, setFormData] = useState(initialFormState);
 
+    useEffect(() => {
+        if (editingTask) {
+            setFormData({
+                title: editingTask.title || "",
+                desc: editingTask.desc || "",
+                category: editingTask.category || "Development",
+                sprint: editingTask.sprint || "",
+                date:
+                    editingTask.date || new Date().toISOString().split("T")[0],
+                time: editingTask.time || "09:00",
+                duration: editingTask.duration || "",
+                energy: editingTask.energy || 3,
+                url: editingTask.url || "",
+                color: editingTask.color || "#334155",
+                priority: editingTask.priority || "normal",
+            });
+        } else {
+            setFormData(initialFormState);
+        }
+    }, [editingTask]);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
@@ -30,36 +53,61 @@ export default function TaskForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (editingTask) {
+            editTask(editingTask._id, formData);
+        } else {
+            addTask(formData);
+            setFormData(initialFormState);
+        }
+    };
 
-        addTask(formData);
-
-        setFormData(initialFormState);
+    const handleCancelEdit = () => {
+        setEditingTask(null);
     };
 
     const titleLength = formData.title.length;
     const descLength = formData.desc.length;
 
     return (
-        <div className="flex flex-col bg-white border border-slate-200 rounded-sm shadow-sm h-full relative">
-            {/* form */}
+        <div
+            className={`flex flex-col bg-white border ${editingTask ? "border-sky-300 shadow-sky-100" : "border-slate-200"} rounded-sm shadow-sm h-full relative transition-colors duration-300`}
+        >
             <form
                 onSubmit={handleSubmit}
                 className="flex flex-col h-full min-h-0"
             >
-                {/* +create new task */}
-                <div className="p-3 border-b border-slate-100 flex justify-between items-center bg-slate-50 lg:bg-white rounded-t-sm shrink-0">
-                    <span className="font-semibold text-slate-700 flex items-center">
-                        <FaPlus className="text-slate-400 mr-2" />
-                        Create New Task
-                    </span>
-                    {/* submit btn */}
-                    <button
-                        type="submit"
-                        className="flex items-center gap-1.5 bg-slate-800 text-white px-4 py-1.5 rounded-sm text-xs font-medium hover:bg-slate-700 transition-colors shadow-sm"
+                <div
+                    className={`p-3 border-b border-slate-100 flex justify-between items-center rounded-t-sm shrink-0 ${editingTask ? "bg-sky-50" : "bg-slate-50 lg:bg-white"}`}
+                >
+                    <span
+                        className={`font-semibold flex items-center ${editingTask ? "text-sky-700" : "text-slate-700"}`}
                     >
-                        Save Task
-                        <FaPlay />
-                    </button>
+                        <FaPlus
+                            className={`${editingTask ? "text-sky-500" : "text-slate-400"} mr-2 ${editingTask ? "rotate-45" : ""} transition-transform`}
+                        />
+                        {editingTask ? "Edit Task" : "Create New Task"}
+                    </span>
+
+                    <div className="flex gap-2">
+                        {/* ปุ่ม Cancel จะโผล่มาเฉพาะตอนแก้ไข */}
+                        {editingTask && (
+                            <button
+                                type="button"
+                                onClick={handleCancelEdit}
+                                className="flex items-center gap-1 text-slate-500 hover:text-slate-700 px-3 py-1.5 rounded-sm text-xs font-medium hover:bg-slate-200 transition-colors"
+                            >
+                                <FaXmark /> Cancel
+                            </button>
+                        )}
+
+                        <button
+                            type="submit"
+                            className={`flex items-center gap-1.5 text-white px-4 py-1.5 rounded-sm text-xs font-medium transition-colors shadow-sm ${editingTask ? "bg-sky-600 hover:bg-sky-700" : "bg-slate-800 hover:bg-slate-700"}`}
+                        >
+                            <FaPlay />
+                            {editingTask ? "Update Task" : "Save Task"}
+                        </button>
+                    </div>
                 </div>
 
                 <div className="overflow-y-auto custom-scrollbar flex-1 px-4 py-1">
