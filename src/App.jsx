@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { TaskProvider } from "./contexts/TaskContext";
+import { Toaster } from "react-hot-toast";
 
 function App() {
     return (
@@ -9,6 +10,18 @@ function App() {
                     <Outlet />
                 </div>
             </div>
+
+            <Toaster
+                position="bottom-right"
+                toastOptions={{
+                    style: {
+                        borderRadius: "4px",
+                        background: "#334155",
+                        color: "#fff",
+                        fontSize: "14px",
+                    },
+                }}
+            />
         </TaskProvider>
     );
 }

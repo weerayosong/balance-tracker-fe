@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { createContext, useState, useEffect } from "react";
 import { taskService } from "../services/taskService";
+import toast from "react-hot-toast";
 
 export const TaskContext = createContext();
 
@@ -35,9 +36,11 @@ export const TaskProvider = ({ children }) => {
             const data = await taskService.createTask(newTaskData);
             if (data.success) {
                 setTasks((prev) => [...prev, data.data]);
+                toast.success("Task created successfully!");
             }
         } catch (error) {
             console.error("Error adding task:", error);
+            toast.error("Failed to create task.");
         }
     };
 
@@ -69,9 +72,11 @@ export const TaskProvider = ({ children }) => {
             const data = await taskService.deleteTask(id);
             if (data.success) {
                 setTasks((prev) => prev.filter((t) => t._id !== id));
+                toast.success("Task deleted.");
             }
         } catch (error) {
             console.error("Error deleting task:", error);
+            toast.error("Failed to delete task.");
         }
     };
     // 5. taskService.updateTask
@@ -84,9 +89,11 @@ export const TaskProvider = ({ children }) => {
                 );
 
                 setEditingTask(null);
+                toast.success("Task updated!");
             }
         } catch (error) {
             console.error("Error editing task:", error);
+            toast.error("Failed to update task.");
         }
     };
 
