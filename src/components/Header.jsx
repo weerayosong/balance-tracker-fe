@@ -1,9 +1,8 @@
-import { useContext } from "react";
+import { useTasks } from "../hooks/useTasks";
 import { FaLayerGroup, FaCheckDouble } from "react-icons/fa6";
-import { TaskContext } from "../contexts/TaskContext";
 
 export default function Header() {
-    const { tasks } = useContext(TaskContext);
+    const { tasks } = useTasks();
 
     const activeCount = tasks.filter(
         (t) => t.status === "active" && !t.completed,

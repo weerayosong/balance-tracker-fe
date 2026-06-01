@@ -1,11 +1,10 @@
 /* eslint-disable */
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useTasks } from "../hooks/useTasks";
 import { FaPlus, FaPlay, FaXmark } from "react-icons/fa6";
-import { TaskContext } from "../contexts/TaskContext";
 
 export default function TaskForm() {
-    const { addTask, editingTask, editTask, setEditingTask } =
-        useContext(TaskContext);
+    const { addTask, editingTask, editTask, setEditingTask } = useTasks();
 
     const initialFormState = {
         title: "",

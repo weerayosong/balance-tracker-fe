@@ -1,21 +1,24 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
+import { useTasks } from "../hooks/useTasks";
 import {
     FaMagnifyingGlass,
     FaClipboardCheck,
     FaBoxOpen,
 } from "react-icons/fa6";
-import { TaskContext } from "../contexts/TaskContext";
+
 import TaskCard from "./TaskCard";
+import TaskSkeleton from "./TaskSkeleton";
 
 export default function TaskBoard() {
     const {
         tasks,
+        isLoading,
         toggleTask,
         archiveTask,
         deleteTask,
         restoreTask,
         setEditingTask,
-    } = useContext(TaskContext);
+    } = useTasks();
 
     // local state for filter
     const [currentTab, setCurrentTab] = useState("Active");
@@ -85,7 +88,13 @@ export default function TaskBoard() {
 
             {/* .map */}
             <div className="flex-1 overflow-y-auto custom-scrollbar p-3 space-y-3 bg-slate-50/50">
-                {filteredTasks.length === 0 ? (
+                {isLoading ? (
+                    <>
+                        <TaskSkeleton />
+                        <TaskSkeleton />
+                        <TaskSkeleton />
+                    </>
+                ) : filteredTasks.length === 0 ? (
                     <div className="h-full flex flex-col items-center justify-center text-slate-400 p-6 border-2 border-dashed border-slate-200 rounded-sm bg-white/50">
                         {currentTab === "Active" ? (
                             <FaClipboardCheck className="text-4xl mb-3 text-slate-300" />
